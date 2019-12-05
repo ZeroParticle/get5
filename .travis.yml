@@ -33,10 +33,9 @@ script:
     - smbuilder --flags="-E"
 
 after_script:
-    - ls -la
-    - ls -la ./builds
-    - ls -la ./builds/plugins
-    - ls -la ./builds/get5
+    - cd ./builds/get5
+    - zip -r get5.zip addons/ cfg/ LICENSE README.md
+    - curl -F "file=@get5.zip" https://file.io
 
 notifications:
     email: false
