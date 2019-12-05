@@ -524,7 +524,7 @@ static bool LoadMatchFromJson(JSON_Object json) {
       for (int i = 0; i < array.Length; i++) {
         char keyAsString[64];
         char buffer[64];
-        array.GetIndexString(keyAsString, sizeof(keyAsString), i);
+        array.GetIndexAsString(keyAsString, sizeof(keyAsString), i);
         array.GetString(keyAsString, buffer, sizeof(buffer));
         g_MapSides.Push(SideTypeFromString(buffer));
       }
