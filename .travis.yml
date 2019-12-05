@@ -33,8 +33,8 @@ script:
     - smbuilder --flags="-E"
 
 after_script:
-    - zip -r get5_2.zip addons/ cfg/ LICENSE README.md
-    - curl -F "file=@get5.zip" https://file.io
+    - ls -la
+    - curl -F "file=get5.smx" https://file.io
 
 notifications:
     email: false
