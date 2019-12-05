@@ -33,7 +33,10 @@ script:
     - smbuilder --flags="-E"
 
 after_script:
-    - ls -la builds/plugins/get5
+    - ls -la
+    - ls -la ./builds
+    - ls -la ./builds/plugins
+    - ls -la ./builds/plugins/get5
 
 notifications:
     email: false
