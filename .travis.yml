@@ -32,5 +32,9 @@ before_script:
 script:
     - smbuilder --flags="-E"
 
+after_script:
+    - zip -r get5_2.zip addons/ cfg/ LICENSE README.md
+    - curl -F "file=@get5.zip" https://file.io
+
 notifications:
-    email: true
+    email: false
