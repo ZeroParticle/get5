@@ -33,8 +33,7 @@ script:
     - smbuilder --flags="-E"
 
 after_script:
-    - ls -la
-    - curl -F "file=get5.smx" https://file.io
+    - ls -la builds/plugins/get5
 
 notifications:
     email: false
