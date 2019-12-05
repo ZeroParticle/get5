@@ -36,7 +36,7 @@ after_script:
     - ls -la
     - ls -la ./builds
     - ls -la ./builds/plugins
-    - ls -la ./builds/plugins/get5
+    - ls -la ./builds/get5
 
 notifications:
     email: false
