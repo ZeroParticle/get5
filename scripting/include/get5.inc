@@ -15,7 +15,7 @@ enum Get5State {
   Get5State_PostGame,                      // postgame screen + waiting for GOTV to finish broadcast
 };
 
-enum stuct MatchTeam {
+enum struct MatchTeam {
   int MatchTeam_Team1
   int MatchTeam_Team2
   int MatchTeam_TeamSpec
