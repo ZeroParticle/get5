@@ -96,7 +96,7 @@ int g_MapsToWin = 1;  // Maps needed to win the series.
 bool g_BO2Match = false;
 char g_MatchID[MATCH_ID_LENGTH];
 ArrayList g_MapPoolList = null;
-ArrayList g_TeamAuths[MatchTeam_Count];
+ArrayList g_TeamAuths[5];
 StringMap g_PlayerNames;
 char g_TeamNames[MatchTeam_Count][MAX_CVAR_LENGTH];
 char g_TeamTags[MatchTeam_Count][MAX_CVAR_LENGTH];
