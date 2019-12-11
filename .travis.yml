@@ -25,7 +25,7 @@ before_script:
     - PATH+=":$PWD"
     - cd include
     - wget https://raw.githubusercontent.com/KyleSanderson/SteamWorks/master/Pawn/includes/SteamWorks.inc
-    - git clone https://github.com/clugg/sm-json
+    - git clone https://github.com/clugg/sm-json.git --branch v1.x
     - cp -r sm-json/addons/sourcemod/scripting/include/* .
     - cd ../../../..
 
