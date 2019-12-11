@@ -139,7 +139,7 @@ int g_RoundClutchingEnemyCount[MAXPLAYERS +
 int g_LastFlashBangThrower = -1;    // last client to have a flashbang detonate
 int g_RoundFlashedBy[MAXPLAYERS + 1];
 bool g_TeamFirstKillDone[4]; // Value of MatchTeam_Count
-bool g_TeamFirstDeathDone[M4]; // Value of MatchTeam_Count
+bool g_TeamFirstDeathDone[4]; // Value of MatchTeam_Count
 int g_PlayerKilledBy[MAXPLAYERS + 1];
 float g_PlayerKilledByTime[MAXPLAYERS + 1];
 int g_DamageDone[MAXPLAYERS + 1][MAXPLAYERS + 1];
