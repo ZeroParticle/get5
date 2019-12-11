@@ -21,7 +21,7 @@ enum struct MatchTeam {
   int MatchTeam_TeamSpec;
   int MatchTeam_TeamNone;
   int MatchTeam_Count;
-};
+}
 
 enum MatchSideType {
   MatchSideType_Standard,     // Team that doesn't pick map gets side choice, leftovers go to knife
