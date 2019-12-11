@@ -16,11 +16,11 @@ enum Get5State {
 };
 
 enum struct MatchTeam {
-  int MatchTeam_Team1
-  int MatchTeam_Team2
-  int MatchTeam_TeamSpec
-  int MatchTeam_TeamNone
-  int MatchTeam_Count
+  int MatchTeam_Team1;
+  int MatchTeam_Team2;
+  int MatchTeam_TeamSpec;
+  int MatchTeam_TeamNone;
+  int MatchTeam_Count;
 };
 
 enum MatchSideType {
