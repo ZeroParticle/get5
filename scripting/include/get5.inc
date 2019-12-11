@@ -15,12 +15,12 @@ enum Get5State {
   Get5State_PostGame,                      // postgame screen + waiting for GOTV to finish broadcast
 };
 
-enum MatchTeam {
-  MatchTeam_Team1,
-  MatchTeam_Team2,
-  MatchTeam_TeamSpec,
-  MatchTeam_TeamNone,
-  MatchTeam_Count,
+enum stuct MatchTeam {
+  int MatchTeam_Team1
+  int MatchTeam_Team2
+  int MatchTeam_TeamSpec
+  int MatchTeam_TeamNone
+  int MatchTeam_Count
 };
 
 enum MatchSideType {
