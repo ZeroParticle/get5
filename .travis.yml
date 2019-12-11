@@ -10,6 +10,8 @@ env:
 
 before_script:
     # install smbuilder
+    - python -V
+    - pip -V
     - git clone https://github.com/splewis/sm-builder
     - cd sm-builder
     - pip install --user -r requirements.txt
