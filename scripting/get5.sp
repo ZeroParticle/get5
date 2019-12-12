@@ -240,6 +240,21 @@ public void OnPluginStart() {
   InitDebugLog(DEBUG_CVAR, "get5");
   LogDebug("OnPluginStart version=%s", PLUGIN_VERSION);
 
+  /** Init for Enum workaround **/
+  g_TeamScoresPerMap = new ArrayList(view_as<int>(MatchTeam_Count));
+  g_TeamAuths = new ArrayList(view_as<int>(MatchTeam_Count));
+  g_TeamFirstKillDone = new bool[view_as<int>(MatchTeam_Count)];
+  g_TeamFirstDeathDone = new bool[view_as<int>(MatchTeam_Count)];
+  g_VetoCaptains = new int[view_as<int>(MatchTeam_Count)];
+  g_TeamSeriesScores = new int[view_as<int>(MatchTeam_Count)];
+  g_TeamReadyOverride = new bool[view_as<int>(MatchTeam_Count)];
+  g_TeamSide = new int[view_as<int>(MatchTeam_Count)];
+  g_TeamStartingSide = new int[view_as<int>(MatchTeam_Count)];
+  g_TeamReadyForUnpause = new bool[view_as<int>(MatchTeam_Count)];
+  g_TeamGivenStopCommand = new bool[view_as<int>(MatchTeam_Count)];
+  g_TeamPauseTimeUsed = new int[view_as<int>(MatchTeam_Count)];
+  g_TeamPausesUsed = new int[view_as<int>(MatchTeam_Count)];
+
   /** Translations **/
   LoadTranslations("get5.phrases");
   LoadTranslations("common.phrases");
@@ -438,19 +453,6 @@ public void OnPluginStart() {
   g_MapSides = new ArrayList();
   g_CvarNames = new ArrayList(MAX_CVAR_LENGTH);
   g_CvarValues = new ArrayList(MAX_CVAR_LENGTH);
-  g_TeamScoresPerMap = new ArrayList(view_as<int>(MatchTeam_Count));
-  g_TeamAuths = new ArrayList(view_as<int>(MatchTeam_Count));
-  g_TeamFirstKillDone = new bool[view_as<int>(MatchTeam_Count)];
-  g_TeamFirstDeathDone = new bool[view_as<int>(MatchTeam_Count)];
-  g_VetoCaptains = new int[view_as<int>(MatchTeam_Count)];
-  g_TeamSeriesScores = new int[view_as<int>(MatchTeam_Count)];
-  g_TeamReadyOverride = new bool[view_as<int>(MatchTeam_Count)];
-  g_TeamSide = new int[view_as<int>(MatchTeam_Count)];
-  g_TeamStartingSide = new int[view_as<int>(MatchTeam_Count)];
-  g_TeamReadyForUnpause = new bool[view_as<int>(MatchTeam_Count)];
-  g_TeamGivenStopCommand = new bool[view_as<int>(MatchTeam_Count)];
-  g_TeamPauseTimeUsed = new int[view_as<int>(MatchTeam_Count)];
-  g_TeamPausesUsed = new int[view_as<int>(MatchTeam_Count)];
 
   for (int i = 0; i < sizeof(g_TeamAuths); i++) {
     g_TeamAuths[i] = new ArrayList(AUTH_LENGTH);
