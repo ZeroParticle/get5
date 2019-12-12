@@ -138,8 +138,8 @@ int g_RoundClutchingEnemyCount[MAXPLAYERS +
                                1];  // number of enemies left alive when last alive on your team
 int g_LastFlashBangThrower = -1;    // last client to have a flashbang detonate
 int g_RoundFlashedBy[MAXPLAYERS + 1];
-bool g_TeamFirstKillDone;
-bool g_TeamFirstDeathDone;
+bool[] g_TeamFirstKillDone;
+bool[] g_TeamFirstDeathDone;
 int g_PlayerKilledBy[MAXPLAYERS + 1];
 float g_PlayerKilledByTime[MAXPLAYERS + 1];
 int g_DamageDone[MAXPLAYERS + 1][MAXPLAYERS + 1];
@@ -148,17 +148,17 @@ KeyValues g_StatsKv;
 
 ArrayList g_TeamScoresPerMap = null;
 char g_LoadedConfigFile[PLATFORM_MAX_PATH];
-int g_VetoCaptains;        // Clients doing the map vetos.
-int g_TeamSeriesScores;    // Current number of maps won per-team.
-bool g_TeamReadyOverride;  // Whether a team has been voluntarily force readied.
+int[] g_VetoCaptains;        // Clients doing the map vetos.
+int[] g_TeamSeriesScores;    // Current number of maps won per-team.
+bool[] g_TeamReadyOverride;  // Whether a team has been voluntarily force readied.
 bool g_ClientReady[MAXPLAYERS + 1];         // Whether clients are marked ready.
-int g_TeamSide;            // Current CS_TEAM_* side for the team.
-int g_TeamStartingSide;
-bool g_TeamReadyForUnpause;
-bool g_TeamGivenStopCommand;
+int[] g_TeamSide;            // Current CS_TEAM_* side for the team.
+int[] g_TeamStartingSide;
+bool[] g_TeamReadyForUnpause;
+bool[] g_TeamGivenStopCommand;
 bool g_InExtendedPause;
-int g_TeamPauseTimeUsed;
-int g_TeamPausesUsed;
+int[] g_TeamPauseTimeUsed;
+int[] g_TeamPausesUsed;
 int g_ReadyTimeWaitingUsed = 0;
 char g_DefaultTeamColors[][] = {
     TEAM1_COLOR, TEAM2_COLOR, "{NORMAL}", "{NORMAL}",
