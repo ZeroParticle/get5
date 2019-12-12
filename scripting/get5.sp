@@ -96,7 +96,7 @@ int g_MapsToWin = 1;  // Maps needed to win the series.
 bool g_BO2Match = false;
 char g_MatchID[MATCH_ID_LENGTH];
 ArrayList g_MapPoolList = null;
-ArrayList g_TeamAuths[MatchTeam_Count];
+ArrayList g_TeamAuths[view_as<int>(MatchTeam_Count)];
 StringMap g_PlayerNames;
 char g_TeamNames[MatchTeam_Count][MAX_CVAR_LENGTH];
 char g_TeamTags[MatchTeam_Count][MAX_CVAR_LENGTH];
@@ -138,8 +138,8 @@ int g_RoundClutchingEnemyCount[MAXPLAYERS +
                                1];  // number of enemies left alive when last alive on your team
 int g_LastFlashBangThrower = -1;    // last client to have a flashbang detonate
 int g_RoundFlashedBy[MAXPLAYERS + 1];
-bool g_TeamFirstKillDone[MatchTeam_Count];
-bool g_TeamFirstDeathDone[MatchTeam_Count];
+bool g_TeamFirstKillDone[view_as<int>(MatchTeam_Count)];
+bool g_TeamFirstDeathDone[view_as<int>(MatchTeam_Count)];
 int g_PlayerKilledBy[MAXPLAYERS + 1];
 float g_PlayerKilledByTime[MAXPLAYERS + 1];
 int g_DamageDone[MAXPLAYERS + 1][MAXPLAYERS + 1];
@@ -148,17 +148,17 @@ KeyValues g_StatsKv;
 
 ArrayList g_TeamScoresPerMap = null;
 char g_LoadedConfigFile[PLATFORM_MAX_PATH];
-int g_VetoCaptains[MatchTeam_Count];        // Clients doing the map vetos.
-int g_TeamSeriesScores[MatchTeam_Count];    // Current number of maps won per-team.
-bool g_TeamReadyOverride[MatchTeam_Count];  // Whether a team has been voluntarily force readied.
+int g_VetoCaptains[view_as<int>(MatchTeam_Count)];        // Clients doing the map vetos.
+int g_TeamSeriesScores[view_as<int>(MatchTeam_Count)];    // Current number of maps won per-team.
+bool g_TeamReadyOverride[view_as<int>(MatchTeam_Count)];  // Whether a team has been voluntarily force readied.
 bool g_ClientReady[MAXPLAYERS + 1];         // Whether clients are marked ready.
-int g_TeamSide[MatchTeam_Count];            // Current CS_TEAM_* side for the team.
-int g_TeamStartingSide[MatchTeam_Count];
-bool g_TeamReadyForUnpause[MatchTeam_Count];
-bool g_TeamGivenStopCommand[MatchTeam_Count];
+int g_TeamSide[view_as<int>(MatchTeam_Count)];            // Current CS_TEAM_* side for the team.
+int g_TeamStartingSide[view_as<int>(MatchTeam_Count)];
+bool g_TeamReadyForUnpause[view_as<int>(MatchTeam_Count)];
+bool g_TeamGivenStopCommand[view_as<int>(MatchTeam_Count)];
 bool g_InExtendedPause;
-int g_TeamPauseTimeUsed[MatchTeam_Count];
-int g_TeamPausesUsed[MatchTeam_Count];
+int g_TeamPauseTimeUsed[view_as<int>(MatchTeam_Count)];
+int g_TeamPausesUsed[view_as<int>(MatchTeam_Count)];
 int g_ReadyTimeWaitingUsed = 0;
 char g_DefaultTeamColors[][] = {
     TEAM1_COLOR, TEAM2_COLOR, "{NORMAL}", "{NORMAL}",
