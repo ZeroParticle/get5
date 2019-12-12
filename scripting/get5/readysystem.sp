@@ -29,11 +29,11 @@ public void SetAllClientsReady(bool ready) {
 
 // Team ready override
 
-public bool IsTeamForcedReady(MatchTeam team) {
+public bool IsTeamForcedReady(int team) {
   return g_TeamReadyOverride[team] == true;
 }
 
-public void SetTeamForcedReady(MatchTeam team, bool ready) {
+public void SetTeamForcedReady(int team, bool ready) {
   g_TeamReadyOverride[team] = ready;
 }
 
@@ -53,7 +53,7 @@ public bool IsSpectatorsReady() {
   return IsTeamReady(MatchTeam_TeamSpec);
 }
 
-public bool IsTeamReady(MatchTeam team) {
+public bool IsTeamReady(int team) {
   if (g_GameState == Get5State_Live) {
     return true;
   }
@@ -78,7 +78,7 @@ public bool IsTeamReady(MatchTeam team) {
   return false;
 }
 
-public int GetTeamReadyCount(MatchTeam team) {
+public int GetTeamReadyCount(int team) {
   int readyCount = 0;
   LOOP_CLIENTS(i) {
     if (IsPlayer(i) && GetClientMatchTeam(i) == team && !IsClientCoaching(i) && IsClientReady(i)) {
@@ -88,7 +88,7 @@ public int GetTeamReadyCount(MatchTeam team) {
   return readyCount;
 }
 
-public int GetTeamPlayerCount(MatchTeam team) {
+public int GetTeamPlayerCount(int team) {
   int playerCount = 0;
   LOOP_CLIENTS(i) {
     if (IsPlayer(i) && GetClientMatchTeam(i) == team && !IsClientCoaching(i)) {
@@ -98,7 +98,7 @@ public int GetTeamPlayerCount(MatchTeam team) {
   return playerCount;
 }
 
-public int GetTeamMinReady(MatchTeam team) {
+public int GetTeamMinReady(int team) {
   if (team == MatchTeam_Team1 || team == MatchTeam_Team2) {
     return g_MinPlayersToReady;
   } else if (team == MatchTeam_TeamSpec) {
@@ -108,7 +108,7 @@ public int GetTeamMinReady(MatchTeam team) {
   }
 }
 
-public int GetPlayersPerTeam(MatchTeam team) {
+public int GetPlayersPerTeam(int team) {
   if (team == MatchTeam_Team1 || team == MatchTeam_Team2) {
     return g_PlayersPerTeam;
   } else if (team == MatchTeam_TeamSpec) {
@@ -137,7 +137,7 @@ public Action Command_AdminForceReady(int client, int args) {
 // Client commands
 
 public Action Command_Ready(int client, int args) {
-  MatchTeam team = GetClientMatchTeam(client);
+  int team = GetClientMatchTeam(client);
   if (!IsReadyGameState() || team == MatchTeam_TeamNone || IsClientReady(client)) {
     return Plugin_Handled;
   }
@@ -154,7 +154,7 @@ public Action Command_Ready(int client, int args) {
 }
 
 public Action Command_NotReady(int client, int args) {
-  MatchTeam team = GetClientMatchTeam(client);
+  int team = GetClientMatchTeam(client);
   if (!IsReadyGameState() || team == MatchTeam_TeamNone || !IsClientReady(client)) {
     return Plugin_Handled;
   }
@@ -174,7 +174,7 @@ public Action Command_NotReady(int client, int args) {
 }
 
 public Action Command_ForceReadyClient(int client, int args) {
-  MatchTeam team = GetClientMatchTeam(client);
+  int team = GetClientMatchTeam(client);
   if (!IsReadyGameState() || team == MatchTeam_TeamNone || IsTeamReady(team)) {
     return Plugin_Handled;
   }
@@ -202,7 +202,7 @@ public Action Command_ForceReadyClient(int client, int args) {
 
 // Messages
 
-static void HandleReadyMessage(MatchTeam team) {
+static void HandleReadyMessage(int team) {
   CheckTeamNameStatus(team);
 
   if (g_GameState == Get5State_PreVeto) {
@@ -229,7 +229,7 @@ public void MissingPlayerInfoMessage() {
   MissingPlayerInfoMessageTeam(MatchTeam_TeamSpec);
 }
 
-public void MissingPlayerInfoMessageTeam(MatchTeam team) {
+public void MissingPlayerInfoMessageTeam(int team) {
   if (IsTeamForcedReady(team)) {
     return;
   }

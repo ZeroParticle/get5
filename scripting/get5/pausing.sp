@@ -36,7 +36,7 @@ public Action Command_Pause(int client, int args) {
     return Plugin_Handled;
   }
 
-  MatchTeam team = GetClientMatchTeam(client);
+  int team = GetClientMatchTeam(client);
   int maxPauses = g_MaxPausesCvar.IntValue;
   char pausePeriodString[32];
   if (g_ResetPausesEachHalfCvar.BoolValue) {
@@ -105,7 +105,7 @@ public Action Timer_PauseTimeCheck(Handle timer, int data) {
     Format(pausePeriodString, sizeof(pausePeriodString), " %t", "PausePeriodSuffix");
   }
 
-  MatchTeam team = view_as<MatchTeam>(data);
+  int team = view_as<int>(data);
   int timeLeft = g_MaxPauseTimeCvar.IntValue - g_TeamPauseTimeUsed[team];
 
   // Only count against the team's pause time if we're actually in the freezetime
@@ -145,7 +145,7 @@ public Action Command_Unpause(int client, int args) {
     return Plugin_Handled;
   }
 
-  MatchTeam team = GetClientMatchTeam(client);
+  int team = GetClientMatchTeam(client);
   g_TeamReadyForUnpause[team] = true;
 
   if (g_TeamReadyForUnpause[MatchTeam_Team1] && g_TeamReadyForUnpause[MatchTeam_Team2]) {

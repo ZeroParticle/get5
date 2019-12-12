@@ -13,7 +13,7 @@ public Action Command_JoinGame(int client, const char[] command, int argc) {
 }
 
 public void CheckClientTeam(int client) {
-  MatchTeam correctTeam = GetClientMatchTeam(client);
+  int correctTeam = GetClientMatchTeam(client);
   int csTeam = MatchTeamToCSTeam(correctTeam);
   int currentTeam = GetClientTeam(client);
 
@@ -51,7 +51,7 @@ public Action Command_JoinTeam(int client, const char[] command, int argc) {
     return Plugin_Stop;
   }
 
-  MatchTeam correctTeam = GetClientMatchTeam(client);
+  int correctTeam = GetClientMatchTeam(client);
   int csTeam = MatchTeamToCSTeam(correctTeam);
 
   LogDebug("jointeam, gamephase = %d", GetGamePhase());
@@ -91,7 +91,7 @@ public Action Command_JoinTeam(int client, const char[] command, int argc) {
 
 public void MoveClientToCoach(int client) {
   LogDebug("MoveClientToCoach %L", client);
-  MatchTeam matchTeam = GetClientMatchTeam(client);
+  int matchTeam = GetClientMatchTeam(client);
   if (matchTeam != MatchTeam_Team1 && matchTeam != MatchTeam_Team2) {
     return;
   }
@@ -168,7 +168,7 @@ public Action Command_Coach(int client, const char[] command, int argc) {
   return Plugin_Stop;
 }
 
-public MatchTeam GetClientMatchTeam(int client) {
+public int GetClientMatchTeam(int client) {
   if (!g_CheckAuthsCvar.BoolValue) {
     return CSTeamToMatchTeam(GetClientTeam(client));
   } else {
@@ -181,7 +181,7 @@ public MatchTeam GetClientMatchTeam(int client) {
   }
 }
 
-public int MatchTeamToCSTeam(MatchTeam t) {
+public int MatchTeamToCSTeam(int t) {
   if (t == MatchTeam_Team1) {
     return g_TeamSide[MatchTeam_Team1];
   } else if (t == MatchTeam_Team2) {
@@ -193,7 +193,7 @@ public int MatchTeamToCSTeam(MatchTeam t) {
   }
 }
 
-public MatchTeam CSTeamToMatchTeam(int csTeam) {
+public int CSTeamToMatchTeam(int csTeam) {
   if (csTeam == g_TeamSide[MatchTeam_Team1]) {
     return MatchTeam_Team1;
   } else if (csTeam == g_TeamSide[MatchTeam_Team2]) {
@@ -205,7 +205,7 @@ public MatchTeam CSTeamToMatchTeam(int csTeam) {
   }
 }
 
-public MatchTeam GetAuthMatchTeam(const char[] steam64) {
+public int GetAuthMatchTeam(const char[] steam64) {
   if (g_GameState == Get5State_None) {
     return MatchTeam_TeamNone;
   }
@@ -215,7 +215,7 @@ public MatchTeam GetAuthMatchTeam(const char[] steam64) {
   }
 
   for (int i = 0; i < view_as<int>(MatchTeam_Count); i++) {
-    MatchTeam team = view_as<MatchTeam>(i);
+    int team = view_as<int>(i);
     if (IsAuthOnTeam(steam64, team)) {
       return team;
     }
@@ -233,7 +233,7 @@ stock int CountPlayersOnCSTeam(int team, int exclude = -1) {
   return count;
 }
 
-stock int CountPlayersOnMatchTeam(MatchTeam team, int exclude = -1) {
+stock int CountPlayersOnMatchTeam(int team, int exclude = -1) {
   int count = 0;
   for (int i = 1; i <= MaxClients; i++) {
     if (i != exclude && IsAuthedPlayer(i) && GetClientMatchTeam(i) == team) {
@@ -248,7 +248,7 @@ public Action Event_OnPlayerTeam(Event event, const char[] name, bool dontBroadc
 }
 
 // Returns the match team a client is the captain of, or MatchTeam_None.
-public MatchTeam GetCaptainTeam(int client) {
+public int GetCaptainTeam(int client) {
   if (client == GetTeamCaptain(MatchTeam_Team1)) {
     return MatchTeam_Team1;
   } else if (client == GetTeamCaptain(MatchTeam_Team2)) {
@@ -258,7 +258,7 @@ public MatchTeam GetCaptainTeam(int client) {
   }
 }
 
-public int GetTeamCaptain(MatchTeam team) {
+public int GetTeamCaptain(int team) {
   // If not forcing auths, take the 1st client on the team.
   if (!g_CheckAuthsCvar.BoolValue) {
     for (int i = 1; i <= MaxClients; i++) {
@@ -290,11 +290,11 @@ public int GetNextTeamCaptain(int client) {
   }
 }
 
-public ArrayList GetTeamAuths(MatchTeam team) {
+public ArrayList GetTeamAuths(int team) {
   return g_TeamAuths[team];
 }
 
-public bool IsAuthOnTeam(const char[] auth, MatchTeam team) {
+public bool IsAuthOnTeam(const char[] auth, int team) {
   return GetTeamAuths(team).FindString(auth) >= 0;
 }
 
@@ -327,7 +327,7 @@ public void AddMapScore() {
                          view_as<int>(MatchTeam_Team2));
 }
 
-public int GetMapScore(int mapNumber, MatchTeam team) {
+public int GetMapScore(int mapNumber, int team) {
   return g_TeamScoresPerMap.Get(mapNumber, view_as<int>(team));
 }
 
@@ -341,7 +341,7 @@ public int GetMapNumber() {
          g_TeamSeriesScores[MatchTeam_TeamNone];
 }
 
-public bool AddPlayerToTeam(const char[] auth, MatchTeam team, const char[] name) {
+public bool AddPlayerToTeam(const char[] auth, int team, const char[] name) {
   char steam64[AUTH_LENGTH];
   ConvertAuthToSteam64(auth, steam64);
 
@@ -359,7 +359,7 @@ public bool RemovePlayerFromTeams(const char[] auth) {
   ConvertAuthToSteam64(auth, steam64);
 
   for (int i = 0; i < view_as<int>(MatchTeam_Count); i++) {
-    MatchTeam team = view_as<MatchTeam>(i);
+    int team = view_as<int>(i);
     int index = GetTeamAuths(team).FindString(steam64);
     if (index >= 0) {
       GetTeamAuths(team).Erase(index);

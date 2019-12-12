@@ -55,7 +55,7 @@ public void Stats_ResetClientRoundValues(int client) {
 public void Stats_RoundStart() {
   for (int i = 1; i <= MaxClients; i++) {
     if (IsPlayer(i)) {
-      MatchTeam team = GetClientMatchTeam(i);
+      int team = GetClientMatchTeam(i);
       if (team == MatchTeam_Team1 || team == MatchTeam_Team2) {
         IncrementPlayerStat(i, STAT_ROUNDSPLAYED);
 
@@ -88,7 +88,7 @@ public void Stats_RoundEnd(int csTeamWinner) {
   // Update player 1vx and x-kill values.
   for (int i = 1; i <= MaxClients; i++) {
     if (IsPlayer(i)) {
-      MatchTeam team = GetClientMatchTeam(i);
+      int team = GetClientMatchTeam(i);
       if (team == MatchTeam_Team1 || team == MatchTeam_Team2) {
         switch (g_RoundKills[i]) {
           case 1:
@@ -136,7 +136,7 @@ public void Stats_RoundEnd(int csTeamWinner) {
   }
 }
 
-public void Stats_UpdateMapScore(MatchTeam winner) {
+public void Stats_UpdateMapScore(int winner) {
   GoToMap();
 
   char winnerString[16];
@@ -150,7 +150,7 @@ public void Stats_UpdateMapScore(MatchTeam winner) {
   DumpToFile();
 }
 
-public void Stats_Forfeit(MatchTeam team) {
+public void Stats_Forfeit(int team) {
   g_StatsKv.SetNum(STAT_SERIES_FORFEIT, 1);
   if (team == MatchTeam_Team1) {
     Stats_SeriesEnd(MatchTeam_Team2);
@@ -161,7 +161,7 @@ public void Stats_Forfeit(MatchTeam team) {
   }
 }
 
-public void Stats_SeriesEnd(MatchTeam winner) {
+public void Stats_SeriesEnd(int winner) {
   char winnerString[16];
   GetTeamString(winner, winnerString, sizeof(winnerString));
   g_StatsKv.SetString(STAT_SERIESWINNER, winnerString);
@@ -418,7 +418,7 @@ static void GoBackFromMap() {
   g_StatsKv.GoBack();
 }
 
-static void GoToTeam(MatchTeam team) {
+static void GoToTeam(int team) {
   GoToMap();
 
   if (team == MatchTeam_Team1)
@@ -433,7 +433,7 @@ static void GoBackFromTeam() {
 }
 
 static void GoToPlayer(int client) {
-  MatchTeam team = GetClientMatchTeam(client);
+  int team = GetClientMatchTeam(client);
   GoToTeam(team);
 
   char auth[AUTH_LENGTH];

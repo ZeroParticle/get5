@@ -56,7 +56,7 @@ public int Native_Message(Handle plugin, int numParams) {
 }
 
 public int Native_MessageToTeam(Handle plugin, int numParams) {
-  MatchTeam team = view_as<MatchTeam>(GetNativeCell(1));
+  int team = view_as<int>(GetNativeCell(1));
   char prefix[64];
   g_MessagePrefixCvar.GetString(prefix, sizeof(prefix));
 
@@ -128,7 +128,7 @@ public int Native_LoadMatchConfigFromURL(Handle plugin, int numParams) {
 public int Native_AddPlayerToTeam(Handle plugin, int numParams) {
   char auth[AUTH_LENGTH];
   GetNativeString(1, auth, sizeof(auth));
-  MatchTeam team = view_as<MatchTeam>(GetNativeCell(2));
+  int team = view_as<int>(GetNativeCell(2));
   char name[MAX_NAME_LENGTH];
   if (numParams >= 3) {
     GetNativeString(3, name, sizeof(name));
@@ -176,7 +176,7 @@ public int Native_MatchTeamToCSTeam(Handle plugin, int numParams) {
 }
 
 public int Native_GetTeamScores(Handle plugin, int numParams) {
-  MatchTeam team = GetNativeCell(1);
+  int team = GetNativeCell(1);
   if (team == MatchTeam_Team1 || team == MatchTeam_Team2) {
     SetNativeCellRef(2, g_TeamSeriesScores[team]);
     SetNativeCellRef(3, CS_GetTeamScore(MatchTeamToCSTeam(team)));

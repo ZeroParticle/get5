@@ -96,7 +96,7 @@ int g_MapsToWin = 1;  // Maps needed to win the series.
 bool g_BO2Match = false;
 char g_MatchID[MATCH_ID_LENGTH];
 ArrayList g_MapPoolList = null;
-ArrayList g_TeamAuths = null;
+ArrayList g_TeamAuths[MatchTeam_Count];
 StringMap g_PlayerNames;
 char g_TeamNames[MatchTeam_Count][MAX_CVAR_LENGTH];
 char g_TeamTags[MatchTeam_Count][MAX_CVAR_LENGTH];
@@ -123,7 +123,7 @@ Get5State g_GameState = Get5State_None;
 ArrayList g_MapsToPlay = null;
 ArrayList g_MapSides = null;
 ArrayList g_MapsLeftInVetoPool = null;
-MatchTeam g_LastVetoTeam;
+int g_LastVetoTeam;
 Menu g_ActiveVetoMenu = null;
 
 /** Backup data **/
@@ -138,8 +138,8 @@ int g_RoundClutchingEnemyCount[MAXPLAYERS +
                                1];  // number of enemies left alive when last alive on your team
 int g_LastFlashBangThrower = -1;    // last client to have a flashbang detonate
 int g_RoundFlashedBy[MAXPLAYERS + 1];
-bool[] g_TeamFirstKillDone;
-bool[] g_TeamFirstDeathDone;
+bool g_TeamFirstKillDone[MatchTeam_Count];
+bool g_TeamFirstDeathDone[MatchTeam_Count];
 int g_PlayerKilledBy[MAXPLAYERS + 1];
 float g_PlayerKilledByTime[MAXPLAYERS + 1];
 int g_DamageDone[MAXPLAYERS + 1][MAXPLAYERS + 1];
@@ -148,24 +148,24 @@ KeyValues g_StatsKv;
 
 ArrayList g_TeamScoresPerMap = null;
 char g_LoadedConfigFile[PLATFORM_MAX_PATH];
-int[] g_VetoCaptains;        // Clients doing the map vetos.
-int[] g_TeamSeriesScores;    // Current number of maps won per-team.
-bool[] g_TeamReadyOverride;  // Whether a team has been voluntarily force readied.
+int g_VetoCaptains[MatchTeam_Count];        // Clients doing the map vetos.
+int g_TeamSeriesScores[MatchTeam_Count];    // Current number of maps won per-team.
+bool g_TeamReadyOverride[MatchTeam_Count];  // Whether a team has been voluntarily force readied.
 bool g_ClientReady[MAXPLAYERS + 1];         // Whether clients are marked ready.
-int[] g_TeamSide;            // Current CS_TEAM_* side for the team.
-int[] g_TeamStartingSide;
-bool[] g_TeamReadyForUnpause;
-bool[] g_TeamGivenStopCommand;
+int g_TeamSide[MatchTeam_Count];            // Current CS_TEAM_* side for the team.
+int g_TeamStartingSide[MatchTeam_Count];
+bool g_TeamReadyForUnpause[MatchTeam_Count];
+bool g_TeamGivenStopCommand[MatchTeam_Count];
 bool g_InExtendedPause;
-int[] g_TeamPauseTimeUsed;
-int[] g_TeamPausesUsed;
+int g_TeamPauseTimeUsed[MatchTeam_Count];
+int g_TeamPausesUsed[MatchTeam_Count];
 int g_ReadyTimeWaitingUsed = 0;
 char g_DefaultTeamColors[][] = {
     TEAM1_COLOR, TEAM2_COLOR, "{NORMAL}", "{NORMAL}",
 };
 
 bool g_ForceWinnerSignal = false;
-MatchTeam g_ForcedWinner = MatchTeam_TeamNone;
+int g_ForcedWinner = MatchTeam_TeamNone;
 
 /** Chat aliases loaded **/
 #define ALIAS_LENGTH 64
@@ -174,7 +174,7 @@ ArrayList g_ChatAliases;
 ArrayList g_ChatAliasesCommands;
 
 /** Map game-state **/
-MatchTeam g_KnifeWinnerTeam = MatchTeam_TeamNone;
+int g_KnifeWinnerTeam = MatchTeam_TeamNone;
 
 /** Map-game state not related to the actual gameplay. **/
 char g_DemoFileName[PLATFORM_MAX_PATH];
@@ -239,21 +239,6 @@ public Plugin myinfo = {
 public void OnPluginStart() {
   InitDebugLog(DEBUG_CVAR, "get5");
   LogDebug("OnPluginStart version=%s", PLUGIN_VERSION);
-
-  /** Init for Enum workaround **/
-  g_TeamScoresPerMap = new ArrayList(view_as<int>(MatchTeam_Count));
-  g_TeamAuths = new ArrayList(view_as<int>(MatchTeam_Count));
-  g_TeamFirstKillDone = new bool[view_as<int>(MatchTeam_Count)];
-  g_TeamFirstDeathDone = new bool[view_as<int>(MatchTeam_Count)];
-  g_VetoCaptains = new int[view_as<int>(MatchTeam_Count)];
-  g_TeamSeriesScores = new int[view_as<int>(MatchTeam_Count)];
-  g_TeamReadyOverride = new bool[view_as<int>(MatchTeam_Count)];
-  g_TeamSide = new int[view_as<int>(MatchTeam_Count)];
-  g_TeamStartingSide = new int[view_as<int>(MatchTeam_Count)];
-  g_TeamReadyForUnpause = new bool[view_as<int>(MatchTeam_Count)];
-  g_TeamGivenStopCommand = new bool[view_as<int>(MatchTeam_Count)];
-  g_TeamPauseTimeUsed = new int[view_as<int>(MatchTeam_Count)];
-  g_TeamPausesUsed = new int[view_as<int>(MatchTeam_Count)];
 
   /** Translations **/
   LoadTranslations("get5.phrases");
@@ -453,6 +438,7 @@ public void OnPluginStart() {
   g_MapSides = new ArrayList();
   g_CvarNames = new ArrayList(MAX_CVAR_LENGTH);
   g_CvarValues = new ArrayList(MAX_CVAR_LENGTH);
+  g_TeamScoresPerMap = new ArrayList(view_as<int>(MatchTeam_Count));
 
   for (int i = 0; i < sizeof(g_TeamAuths); i++) {
     g_TeamAuths[i] = new ArrayList(AUTH_LENGTH);
@@ -551,7 +537,7 @@ public void OnClientAuthorized(int client, const char[] auth) {
   }
 
   if (g_GameState != Get5State_None && g_CheckAuthsCvar.BoolValue) {
-    MatchTeam team = GetClientMatchTeam(client);
+    int team = GetClientMatchTeam(client);
     if (team == MatchTeam_TeamNone) {
       KickClient(client, "%t", "YourAreNotAPlayerInfoMessage");
     } else {
@@ -726,7 +712,7 @@ static void CheckReadyWaitingTimes() {
   }
 }
 
-static bool CheckReadyWaitingTime(MatchTeam team) {
+static bool CheckReadyWaitingTime(int team) {
   if (!IsTeamReady(team) && g_GameState != Get5State_None) {
     int timeLeft = g_TeamTimeToStartCvar.IntValue - g_ReadyTimeWaitingUsed;
 
@@ -884,7 +870,7 @@ public Action Command_Stop(int client, int args) {
     RestoreLastRound();
   }
 
-  MatchTeam team = GetClientMatchTeam(client);
+  int team = GetClientMatchTeam(client);
   g_TeamGivenStopCommand[team] = true;
 
   if (g_TeamGivenStopCommand[MatchTeam_Team1] && !g_TeamGivenStopCommand[MatchTeam_Team2]) {
@@ -933,7 +919,7 @@ public Action Event_MatchOver(Event event, const char[] name, bool dontBroadcast
     // Figure out who won
     int t1score = CS_GetTeamScore(MatchTeamToCSTeam(MatchTeam_Team1));
     int t2score = CS_GetTeamScore(MatchTeamToCSTeam(MatchTeam_Team2));
-    MatchTeam winningTeam = MatchTeam_TeamNone;
+    int winningTeam = MatchTeam_TeamNone;
     if (t1score > t2score) {
       winningTeam = MatchTeam_Team1;
     } else if (t2score > t1score) {
@@ -1020,7 +1006,7 @@ public Action Event_MatchOver(Event event, const char[] name, bool dontBroadcast
   return Plugin_Continue;
 }
 
-static void SeriesEndMessage(MatchTeam team) {
+static void SeriesEndMessage(int team) {
   if (g_MapsToWin == 1) {
     if (team == MatchTeam_TeamNone) {
       Get5_MessageToAll("%t", "TeamTiedMatchInfoMessage", g_FormattedTeamNames[MatchTeam_Team1],
@@ -1078,7 +1064,7 @@ public void EndSeries() {
   int t1maps = g_TeamSeriesScores[MatchTeam_Team1];
   int t2maps = g_TeamSeriesScores[MatchTeam_Team2];
 
-  MatchTeam winningTeam = MatchTeam_TeamNone;
+  int winningTeam = MatchTeam_TeamNone;
   if (t1maps > t2maps) {
     winningTeam = MatchTeam_Team1;
   } else if (t2maps > t1maps) {
@@ -1377,7 +1363,7 @@ public Action Command_Status(int client, int args) {
   return Plugin_Handled;
 }
 
-static void AddTeamInfo(JSON_Object json, MatchTeam matchTeam) {
+static void AddTeamInfo(JSON_Object json, int matchTeam) {
   int team = MatchTeamToCSTeam(matchTeam);
   char side[4];
   CSTeamString(team, side, sizeof(side));

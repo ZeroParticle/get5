@@ -39,7 +39,7 @@ static void AddMapData(JSON_Object params) {
   params.SetInt("map_number", GetMapNumber());
 }
 
-static void AddTeam(JSON_Object params, const char[] key, MatchTeam team) {
+static void AddTeam(JSON_Object params, const char[] key, int team) {
   char value[16];
   GetTeamString(team, value, sizeof(value));
   params.SetString(key, value);
@@ -68,7 +68,7 @@ public void EventLogger_SeriesStart() {
   EventLogger_EndEvent("series_start");
 }
 
-public void EventLogger_MapVetoed(MatchTeam team, const char[] map) {
+public void EventLogger_MapVetoed(int team, const char[] map) {
   EventLogger_StartEvent();
 
   AddTeam(params, "team", team);
@@ -77,7 +77,7 @@ public void EventLogger_MapVetoed(MatchTeam team, const char[] map) {
   EventLogger_EndEvent("map_veto");
 }
 
-public void EventLogger_MapPicked(MatchTeam team, const char[] map, int mapNumber) {
+public void EventLogger_MapPicked(int team, const char[] map, int mapNumber) {
   EventLogger_StartEvent();
 
   AddTeam(params, "team", team);
@@ -87,7 +87,7 @@ public void EventLogger_MapPicked(MatchTeam team, const char[] map, int mapNumbe
   EventLogger_EndEvent("map_pick");
 }
 
-public void EventLogger_SidePicked(MatchTeam team, const char[] map, int mapNumber, int side) {
+public void EventLogger_SidePicked(int team, const char[] map, int mapNumber, int side) {
   EventLogger_StartEvent();
 
   AddTeam(params, "team", team);
@@ -104,7 +104,7 @@ public void EventLogger_KnifeStart() {
   EventLogger_EndEvent("knife_start");
 }
 
-public void EventLogger_KnifeWon(MatchTeam winner, bool swap) {
+public void EventLogger_KnifeWon(int winner, bool swap) {
   EventLogger_StartEvent();
   AddMapData(params);
   AddTeam(params, "winner", winner);
@@ -156,7 +156,7 @@ public void EventLogger_SideSwap(int team1Side, int team2Side) {
   EventLogger_EndEvent("side_swap");
 }
 
-public void EventLogger_MapEnd(MatchTeam winner) {
+public void EventLogger_MapEnd(int winner) {
   EventLogger_StartEvent();
   AddMapData(params);
   AddTeam(params, "winner", winner);
@@ -165,7 +165,7 @@ public void EventLogger_MapEnd(MatchTeam winner) {
   EventLogger_EndEvent("map_end");
 }
 
-public void EventLogger_SeriesEnd(MatchTeam winner, int t1score, int t2score) {
+public void EventLogger_SeriesEnd(int winner, int t1score, int t2score) {
   EventLogger_StartEvent();
   AddTeam(params, "team", winner);
   params.SetInt("team1_series_score", t1score);
@@ -231,7 +231,7 @@ public void EventLogger_PlayerDisconnect(int client) {
   EventLogger_EndEvent("player_disconnect");
 }
 
-public void EventLogger_TeamReady(MatchTeam team, const char[] stage) {
+public void EventLogger_TeamReady(int team, const char[] stage) {
   EventLogger_StartEvent();
 
   AddTeam(params, "team", team);
@@ -240,7 +240,7 @@ public void EventLogger_TeamReady(MatchTeam team, const char[] stage) {
   EventLogger_EndEvent("team_ready");
 }
 
-public void EventLogger_TeamUnready(MatchTeam team) {
+public void EventLogger_TeamUnready(int team) {
   EventLogger_StartEvent();
 
   AddTeam(params, "team", team);

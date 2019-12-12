@@ -21,7 +21,7 @@ public Action Timer_VetoCountdown(Handle timer) {
   static int warningsPrinted = 0;
   if (warningsPrinted >= g_VetoCountdownCvar.IntValue) {
     warningsPrinted = 0;
-    MatchTeam startingTeam = OtherMatchTeam(g_LastVetoTeam);
+    int startingTeam = OtherMatchTeam(g_LastVetoTeam);
     VetoController(g_VetoCaptains[startingTeam]);
     return Plugin_Stop;
   } else {
@@ -255,7 +255,7 @@ public void GiveMapVetoMenu(int client) {
 public int MapVetoMenuHandler(Menu menu, MenuAction action, int param1, int param2) {
   if (action == MenuAction_Select) {
     int client = param1;
-    MatchTeam team = GetClientMatchTeam(client);
+    int team = GetClientMatchTeam(client);
     char mapName[PLATFORM_MAX_PATH];
     menu.GetItem(param2, mapName, sizeof(mapName));
 
@@ -318,7 +318,7 @@ public void GiveMapPickMenu(int client) {
 public int MapPickMenuHandler(Menu menu, MenuAction action, int param1, int param2) {
   if (action == MenuAction_Select) {
     int client = param1;
-    MatchTeam team = GetClientMatchTeam(client);
+    int team = GetClientMatchTeam(client);
     char mapName[PLATFORM_MAX_PATH];
     menu.GetItem(param2, mapName, sizeof(mapName));
 
@@ -376,7 +376,7 @@ public void GiveSidePickMenu(int client) {
 public int SidePickMenuHandler(Menu menu, MenuAction action, int param1, int param2) {
   if (action == MenuAction_Select) {
     int client = param1;
-    MatchTeam team = GetClientMatchTeam(client);
+    int team = GetClientMatchTeam(client);
     char choice[PLATFORM_MAX_PATH];
     menu.GetItem(param2, choice, sizeof(choice));
 

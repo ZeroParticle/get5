@@ -15,7 +15,7 @@ enum Get5State {
   Get5State_PostGame,                      // postgame screen + waiting for GOTV to finish broadcast
 };
 
-enum MatchTeam {
+enum {
   MatchTeam_Team1,
   MatchTeam_Team2,
   MatchTeam_TeamSpec,
@@ -54,12 +54,12 @@ forward void Get5_OnGameStateChanged(Get5State oldState, Get5State newState);
 forward void Get5_OnRoundStatsUpdated();
 
 // Called at the end of a map in a series.
-forward void Get5_OnMapResult(const char[] map, MatchTeam mapWinner, int team1Score, int team2Score,
+forward void Get5_OnMapResult(const char[] map, int mapWinner, int team1Score, int team2Score,
                               int mapNumber);
 
 // Called at the end of a full match.
 // Note: both Get5_OnMapResult and Get5_OnSeriesResult are called on the last map of a series.
-forward void Get5_OnSeriesResult(MatchTeam seriesWinner, int team1MapScore, int team2MapScore);
+forward void Get5_OnSeriesResult(int seriesWinner, int team1MapScore, int team2MapScore);
 
 forward void Get5_OnPreLoadMatchConfig(const char[] filePath);
 
@@ -67,15 +67,15 @@ forward void Get5_OnPreLoadMatchConfig(const char[] filePath);
 forward void Get5_OnLoadMatchConfigFailed(const char[] reason);
 
 // Called when a team vetoes a map.
-forward void Get5_OnMapVetoed(MatchTeam team, const char[] map);
+forward void Get5_OnMapVetoed(int team, const char[] map);
 
 // Called when a team selects a map.
 // The team parameter will be MatchTeam_TeamNone if the map was selected as the last remaining map
 // and not by one of the teams specifically.
-forward void Get5_OnMapPicked(MatchTeam team, const char[] map);
+forward void Get5_OnMapPicked(int team, const char[] map);
 
 // Called when a team selects a side.
-forward void Get5_OnSidePicked(MatchTeam team, const char[] map, int side);
+forward void Get5_OnSidePicked(int team, const char[] map, int side);
 
 // Called when a demo finishes recording.
 forward void Get5_OnDemoFinished(const char[] filename);
@@ -90,7 +90,7 @@ native Get5State Get5_GetGameState();
 native void Get5_Message(int client, const char[] format, any:...);
 
 // Prints a plugin-formatted message to a team.
-native void Get5_MessageToTeam(MatchTeam team, const char[] format, any:...);
+native void Get5_MessageToTeam(int team, const char[] format, any:...);
 
 // Prints a plugin-formatted message to all clients.
 native void Get5_MessageToAll(const char[] format, any:...);
@@ -106,7 +106,7 @@ native bool Get5_LoadMatchConfigFromURL(const char[] url, ArrayList paramNames =
 
 // Adds a player to a match team. You can optionally force set a player name here as well.
 // Returns if they were successfully added.
-native bool Get5_AddPlayerToTeam(const char[] steamId, MatchTeam team,
+native bool Get5_AddPlayerToTeam(const char[] steamId, int team,
                                  const char[] playerName = "");
 
 // Force sets a steam64 to map to a specified playername
@@ -117,16 +117,16 @@ native bool Get5_SetPlayerName(const char[] steamId, const char[] playerName);
 native bool Get5_RemovePlayerFromTeam(const char[] steamId);
 
 // Returns the current match team a auth is mapped to.
-native MatchTeam Get5_GetPlayerTeam(const char[] steamId);
+native int Get5_GetPlayerTeam(const char[] steamId);
 
 // Translates a CS team (CS_TEAM_T, etc.) to a Match team.
-native MatchTeam Get5_CSTeamToMatchTeam(int csTeam);
+native int Get5_CSTeamToMatchTeam(int csTeam);
 
-// Translate da MatchTeam to a CS team.
-native int Get5_MatchTeamToCSTeam(MatchTeam team);
+// Translate da int to a CS team.
+native int Get5_MatchTeamToCSTeam(int team);
 
 // Gets the scores for a match team.
-native void Get5_GetTeamScores(MatchTeam team, int& seriesScore, int& currentMapScore);
+native void Get5_GetTeamScores(int team, int& seriesScore, int& currentMapScore);
 
 // Gets the current matchid.
 native void Get5_GetMatchID(char[] id, int length);

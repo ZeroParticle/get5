@@ -304,7 +304,7 @@ public void WriteMatchToKv(KeyValues kv) {
   kv.GoBack();
 }
 
-static void AddTeamBackupData(KeyValues kv, MatchTeam team) {
+static void AddTeamBackupData(KeyValues kv, int team) {
   kv.JumpToKey("players", true);
   char auth[AUTH_LENGTH];
   char name[MAX_NAME_LENGTH];
@@ -554,7 +554,7 @@ static bool LoadMatchFromJson(JSON_Object json) {
   return true;
 }
 
-static void LoadTeamDataJson(JSON_Object json, MatchTeam matchTeam) {
+static void LoadTeamDataJson(JSON_Object json, int matchTeam) {
   GetTeamAuths(matchTeam).Clear();
 
   char fromfile[PLATFORM_MAX_PATH];
@@ -585,7 +585,7 @@ static void LoadTeamDataJson(JSON_Object json, MatchTeam matchTeam) {
          g_DefaultTeamColors[matchTeam], g_TeamNames[matchTeam]);
 }
 
-static void LoadTeamData(KeyValues kv, MatchTeam matchTeam) {
+static void LoadTeamData(KeyValues kv, int matchTeam) {
   GetTeamAuths(matchTeam).Clear();
   char fromfile[PLATFORM_MAX_PATH];
   kv.GetString("fromfile", fromfile, sizeof(fromfile));
@@ -623,8 +623,8 @@ static void LoadDefaultMapList(ArrayList list) {
 }
 
 public void SetMatchTeamCvars() {
-  MatchTeam ctTeam = MatchTeam_Team1;
-  MatchTeam tTeam = MatchTeam_Team2;
+  int ctTeam = MatchTeam_Team1;
+  int tTeam = MatchTeam_Team2;
   if (g_TeamStartingSide[MatchTeam_Team1] == CS_TEAM_T) {
     ctTeam = MatchTeam_Team2;
     tTeam = MatchTeam_Team1;
@@ -681,7 +681,7 @@ public void SetMatchTeamCvars() {
   }
 }
 
-public MatchTeam GetMapWinner(int mapNumber) {
+public int GetMapWinner(int mapNumber) {
   int team1score = GetMapScore(mapNumber, MatchTeam_Team1);
   int team2score = GetMapScore(mapNumber, MatchTeam_Team2);
   if (team1score > team2score) {
@@ -720,7 +720,7 @@ public Action Command_LoadTeam(int client, int args) {
   char arg1[PLATFORM_MAX_PATH];
   char arg2[PLATFORM_MAX_PATH];
   if (args >= 2 && GetCmdArg(1, arg1, sizeof(arg1)) && GetCmdArg(2, arg2, sizeof(arg2))) {
-    MatchTeam team = MatchTeam_TeamNone;
+    int team = MatchTeam_TeamNone;
     if (StrEqual(arg1, "team1")) {
       team = MatchTeam_Team1;
     } else if (StrEqual(arg1, "team2")) {
@@ -770,7 +770,7 @@ public Action Command_AddPlayer(int client, int args) {
       GetCmdArg(3, name, sizeof(name));
     }
 
-    MatchTeam team = MatchTeam_TeamNone;
+    int team = MatchTeam_TeamNone;
     if (StrEqual(teamString, "team1")) {
       team = MatchTeam_Team1;
     } else if (StrEqual(teamString, "team2")) {
@@ -989,7 +989,7 @@ public Action Command_Ringer(int client, int args) {
   return Plugin_Handled;
 }
 
-static int AddPlayersToAuthKv(KeyValues kv, MatchTeam team, char teamName[MAX_CVAR_LENGTH]) {
+static int AddPlayersToAuthKv(KeyValues kv, int team, char teamName[MAX_CVAR_LENGTH]) {
   int count = 0;
   kv.JumpToKey("players", true);
   bool gotClientName = false;
@@ -997,7 +997,7 @@ static int AddPlayersToAuthKv(KeyValues kv, MatchTeam team, char teamName[MAX_CV
   for (int i = 1; i <= MaxClients; i++) {
     if (IsAuthedPlayer(i)) {
       int csTeam = GetClientTeam(i);
-      MatchTeam t = MatchTeam_TeamNone;
+      int t = MatchTeam_TeamNone;
       if (csTeam == TEAM1_STARTING_SIDE) {
         t = MatchTeam_Team1;
       } else if (csTeam == TEAM2_STARTING_SIDE) {
@@ -1053,7 +1053,7 @@ static void AddTeamLogoToDownloadTable(const char[] logoName) {
   AddFileToDownloadsTable(logoPath);
 }
 
-public void CheckTeamNameStatus(MatchTeam team) {
+public void CheckTeamNameStatus(int team) {
   if (StrEqual(g_TeamNames[team], "") && team != MatchTeam_TeamSpec) {
     for (int i = 1; i <= MaxClients; i++) {
       if (IsAuthedPlayer(i)) {

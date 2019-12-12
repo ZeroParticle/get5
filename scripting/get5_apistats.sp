@@ -255,7 +255,7 @@ public void UpdateRoundStats(int mapNumber) {
   delete kv;
 }
 
-public void Get5_OnMapResult(const char[] map, MatchTeam mapWinner, int team1Score, int team2Score,
+public void Get5_OnMapResult(const char[] map, int mapWinner, int team1Score, int team2Score,
                       int mapNumber) {
   char winnerString[64];
   GetTeamString(mapWinner, winnerString, sizeof(winnerString));
@@ -273,7 +273,7 @@ static void AddIntStat(Handle req, KeyValues kv, const char[] field) {
   AddIntParam(req, field, kv.GetNum(field));
 }
 
-public void UpdatePlayerStats(KeyValues kv, MatchTeam team) {
+public void UpdatePlayerStats(KeyValues kv, int team) {
   char name[MAX_NAME_LENGTH];
   char auth[AUTH_LENGTH];
   int mapNumber = MapNumber();
@@ -338,7 +338,7 @@ static void AddIntParam(Handle request, const char[] key, int value) {
   AddStringParam(request, key, buffer);
 }
 
-public void Get5_OnSeriesResult(MatchTeam seriesWinner, int team1MapScore, int team2MapScore) {
+public void Get5_OnSeriesResult(int seriesWinner, int team1MapScore, int team2MapScore) {
   char winnerString[64];
   GetTeamString(seriesWinner, winnerString, sizeof(winnerString));
 

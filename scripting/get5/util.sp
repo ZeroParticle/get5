@@ -15,7 +15,7 @@ static char _colorCodes[][] = {"\x01", "\x02", "\x03", "\x04", "\x05", "\x06",
                                "\x07", "\x08", "\x09", "\x0B", "\x0C", "\x0E"};
 
 // Convenience macros.
-#define LOOP_TEAMS(%1) for (MatchTeam %1 = MatchTeam_Team1; %1 < MatchTeam_Count; %1 ++)
+#define LOOP_TEAMS(%1) for (int %1 = MatchTeam_Team1; %1 < MatchTeam_Count; %1 ++)
 #define LOOP_CLIENTS(%1) for (int %1 = 0; %1 <= MaxClients; %1 ++)
 
 // These match CS:GO's m_gamePhase values.
@@ -262,7 +262,7 @@ stock void SetTeamInfo(int csTeam, const char[] name, const char[] flag = "",
   char taggedName[MAX_CVAR_LENGTH];
   if ((g_GameState == Get5State_Warmup || g_GameState == Get5State_PreVeto) &&
       !g_DoingBackupRestoreNow) {
-    MatchTeam matchTeam = CSTeamToMatchTeam(csTeam);
+    int matchTeam = CSTeamToMatchTeam(csTeam);
     if (IsTeamReady(matchTeam)) {
       Format(taggedName, sizeof(taggedName), "%T %s", "ReadyTag", LANG_SERVER, name);
     } else {
@@ -451,7 +451,7 @@ stock int OtherCSTeam(int team) {
   }
 }
 
-stock MatchTeam OtherMatchTeam(MatchTeam team) {
+stock int OtherMatchTeam(int team) {
   if (team == MatchTeam_Team1) {
     return MatchTeam_Team2;
   } else if (team == MatchTeam_Team2) {
@@ -461,11 +461,11 @@ stock MatchTeam OtherMatchTeam(MatchTeam team) {
   }
 }
 
-stock bool IsPlayerTeam(MatchTeam team) {
+stock bool IsPlayerTeam(int team) {
   return team == MatchTeam_Team1 || team == MatchTeam_Team2;
 }
 
-public MatchTeam VetoFirstFromString(const char[] str) {
+public int VetoFirstFromString(const char[] str) {
   if (StrEqual(str, "team2", false)) {
     return MatchTeam_Team2;
   } else {
@@ -515,7 +515,7 @@ stock void CSTeamString(int csTeam, char[] buffer, int len) {
   }
 }
 
-stock void GetTeamString(MatchTeam team, char[] buffer, int len) {
+stock void GetTeamString(int team, char[] buffer, int len) {
   if (team == MatchTeam_Team1) {
     Format(buffer, len, "team1");
   } else if (team == MatchTeam_Team2) {
