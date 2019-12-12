@@ -96,7 +96,7 @@ int g_MapsToWin = 1;  // Maps needed to win the series.
 bool g_BO2Match = false;
 char g_MatchID[MATCH_ID_LENGTH];
 ArrayList g_MapPoolList = null;
-ArrayList g_TeamAuths[view_as<int>(MatchTeam_Count)];
+ArrayList g_TeamAuths = null;
 StringMap g_PlayerNames;
 char g_TeamNames[MatchTeam_Count][MAX_CVAR_LENGTH];
 char g_TeamTags[MatchTeam_Count][MAX_CVAR_LENGTH];
@@ -138,8 +138,8 @@ int g_RoundClutchingEnemyCount[MAXPLAYERS +
                                1];  // number of enemies left alive when last alive on your team
 int g_LastFlashBangThrower = -1;    // last client to have a flashbang detonate
 int g_RoundFlashedBy[MAXPLAYERS + 1];
-bool g_TeamFirstKillDone[view_as<int>(MatchTeam_Count)];
-bool g_TeamFirstDeathDone[view_as<int>(MatchTeam_Count)];
+bool g_TeamFirstKillDone = null;
+bool g_TeamFirstDeathDone = null;
 int g_PlayerKilledBy[MAXPLAYERS + 1];
 float g_PlayerKilledByTime[MAXPLAYERS + 1];
 int g_DamageDone[MAXPLAYERS + 1][MAXPLAYERS + 1];
@@ -148,17 +148,17 @@ KeyValues g_StatsKv;
 
 ArrayList g_TeamScoresPerMap = null;
 char g_LoadedConfigFile[PLATFORM_MAX_PATH];
-int g_VetoCaptains[view_as<int>(MatchTeam_Count)];        // Clients doing the map vetos.
-int g_TeamSeriesScores[view_as<int>(MatchTeam_Count)];    // Current number of maps won per-team.
-bool g_TeamReadyOverride[view_as<int>(MatchTeam_Count)];  // Whether a team has been voluntarily force readied.
+int g_VetoCaptains = null;        // Clients doing the map vetos.
+int g_TeamSeriesScores = null;    // Current number of maps won per-team.
+bool g_TeamReadyOverride = null;  // Whether a team has been voluntarily force readied.
 bool g_ClientReady[MAXPLAYERS + 1];         // Whether clients are marked ready.
-int g_TeamSide[view_as<int>(MatchTeam_Count)];            // Current CS_TEAM_* side for the team.
-int g_TeamStartingSide[view_as<int>(MatchTeam_Count)];
-bool g_TeamReadyForUnpause[view_as<int>(MatchTeam_Count)];
-bool g_TeamGivenStopCommand[view_as<int>(MatchTeam_Count)];
+int g_TeamSide = null;            // Current CS_TEAM_* side for the team.
+int g_TeamStartingSide = null;
+bool g_TeamReadyForUnpause = null;
+bool g_TeamGivenStopCommand = null;
 bool g_InExtendedPause;
-int g_TeamPauseTimeUsed[view_as<int>(MatchTeam_Count)];
-int g_TeamPausesUsed[view_as<int>(MatchTeam_Count)];
+int g_TeamPauseTimeUsed = null;
+int g_TeamPausesUsed = null;
 int g_ReadyTimeWaitingUsed = 0;
 char g_DefaultTeamColors[][] = {
     TEAM1_COLOR, TEAM2_COLOR, "{NORMAL}", "{NORMAL}",
@@ -439,6 +439,18 @@ public void OnPluginStart() {
   g_CvarNames = new ArrayList(MAX_CVAR_LENGTH);
   g_CvarValues = new ArrayList(MAX_CVAR_LENGTH);
   g_TeamScoresPerMap = new ArrayList(view_as<int>(MatchTeam_Count));
+  g_TeamAuths = new ArrayList(view_as<int>(MatchTeam_Count));
+  g_TeamFirstKillDone = new bool[view_as<int>(MatchTeam_Count)];
+  g_TeamFirstDeathDone = new bool[view_as<int>(MatchTeam_Count)];
+  g_VetoCaptains = new int[view_as<int>(MatchTeam_Count)];
+  g_TeamSeriesScores = new int[view_as<int>(MatchTeam_Count)];
+  g_TeamReadyOverride = new bool[view_as<int>(MatchTeam_Count)];
+  g_TeamSide = new int[view_as<int>(MatchTeam_Count)];
+  g_TeamStartingSide = new int[view_as<int>(MatchTeam_Count)];
+  g_TeamReadyForUnpause = new bool[view_as<int>(MatchTeam_Count)];
+  g_TeamGivenStopCommand = new bool[view_as<int>(MatchTeam_Count)];
+  g_TeamPauseTimeUsed = new int[view_as<int>(MatchTeam_Count)];
+  g_TeamPausesUsed = new int[view_as<int>(MatchTeam_Count)];
 
   for (int i = 0; i < sizeof(g_TeamAuths); i++) {
     g_TeamAuths[i] = new ArrayList(AUTH_LENGTH);
