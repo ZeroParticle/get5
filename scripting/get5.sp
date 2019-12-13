@@ -1094,20 +1094,29 @@ public void EndSeries() {
 
 public Action Event_RoundPreStart(Event event, const char[] name, bool dontBroadcast) {
   LogDebug("Event_RoundPreStart");
+  PrintToServer("1");
   if (g_PendingSideSwap) {
+    PrintToServer("2");
     g_PendingSideSwap = false;
+    PrintToServer("3");
     SwapSides();
+    PrintToServer("4");
   }
-
+  PrintToServer("5");
   if (g_GameState == Get5State_GoingLive) {
+    PrintToServer("6");
     ChangeState(Get5State_Live);
+    PrintToServer("7");
   }
-
+  PrintToServer("8");
   Stats_ResetRoundValues();
-
+  PrintToServer("9");
   if (g_GameState >= Get5State_Warmup && !g_DoingBackupRestoreNow) {
+    PrintToServer("10");
     WriteBackup();
+    PrintToServer("11");
   }
+  PrintToServer("12");
 }
 
 public Action Event_FreezeEnd(Event event, const char[] name, bool dontBroadcast) {
