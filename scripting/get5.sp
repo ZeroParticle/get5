@@ -237,6 +237,9 @@ public Plugin myinfo = {
  */
 
 public void OnPluginStart() {
+  PrintToServer("Value of MatchTeam_Count: %d", MatchTeam_Count);
+  PrintToServer("Value of MatchTeam_Count as integer: %d", view_as<int>(MatchTeam_Count));
+  PrintToServer("Size of g_TeamAuths: %d", sizeof(g_TeamAuths));
   InitDebugLog(DEBUG_CVAR, "get5");
   LogDebug("OnPluginStart version=%s", PLUGIN_VERSION);
 
@@ -440,9 +443,6 @@ public void OnPluginStart() {
   g_CvarValues = new ArrayList(MAX_CVAR_LENGTH);
   g_TeamScoresPerMap = new ArrayList(view_as<int>(MatchTeam_Count));
 
-  PrintToConsole("Value of MatchTeam_Count: %d", MatchTeam_Count);
-  PrintToConsole("Value of MatchTeam_Count as integer: %d", view_as<int>(MatchTeam_Count));
-  PrintToConsole("Size of g_TeamAuths: %d", sizeof(g_TeamAuths));
   for (int i = 0; i < sizeof(g_TeamAuths); i++) {
     g_TeamAuths[i] = new ArrayList(AUTH_LENGTH);
   }
