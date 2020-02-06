@@ -12,6 +12,8 @@ before_script:
     - git submodule update --init
 
     # install smbuilder
+    - python -V
+    - pip -V
     - git clone https://github.com/splewis/sm-builder
     - cd sm-builder
     - pip install --user -r requirements.txt
