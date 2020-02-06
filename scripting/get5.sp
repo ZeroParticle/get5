@@ -352,7 +352,7 @@ public void OnPluginStart() {
   AddAliasedCommand("ready", Command_Ready, "Marks the client as ready");
   AddAliasedCommand("unready", Command_NotReady, "Marks the client as not ready");
   AddAliasedCommand("notready", Command_NotReady, "Marks the client as not ready");
-  AddAliasedCommand("forceready", Command_ForceReadyClient, "Force marks clients team as ready");
+  // AddAliasedCommand("forceready", Command_ForceReadyClient, "Force marks clients team as ready");
   AddAliasedCommand("tech", Command_TechPause, "Calls for a tech pause");
   AddAliasedCommand("pause", Command_Pause, "Pauses the game");
   AddAliasedCommand("unpause", Command_Unpause, "Unpauses the game");
